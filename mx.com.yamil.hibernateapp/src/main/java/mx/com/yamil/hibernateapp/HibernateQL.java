@@ -5,6 +5,7 @@ import java.util.List;
 import jakarta.persistence.EntityManager;
 import mx.com.yamil.hibernateapp.entity.Cliente;
 import mx.com.yamil.hibernateapp.utilities.JpaUtilities;
+import mx.com.yamil.hibernateapp.vo.ClienteVO;
 
 public class HibernateQL {
 	public static void main(String[] args) {
@@ -55,7 +56,50 @@ public class HibernateQL {
 			String formaPago = (String) c[1];
 			System.out.println("formaPago: "+formaPago+" \n cliente: "+cli);
 		});
-				
+		
+		System.out.println("CONSULTA QUE DEVUELVA OBJETO DE CLASE ENTITY");
+		clientes = em.createQuery("Select new Cliente(c.nombre, c.apellido) from Cliente c",Cliente.class).getResultList();
+		clientes.forEach(c -> System.out.println(c));
+		
+		System.out.println("CONSULTA QUE DEVUELVA OBJETO DE CLASE VO");
+		List<ClienteVO>clientesVO = em.createQuery("Select new mx.com.yamil.hibernateapp.vo.ClienteVO(c.nombre, c.apellido) from Cliente c",ClienteVO.class).getResultList();
+		clientesVO.forEach(c -> System.out.println(c));
+		
+		System.out.println("CONSULTA QUE DEVUELVA NOMBRES");
+		List<String> nombres = em.createQuery("SELECT c.nombre FROM Cliente c",String.class)
+				.getResultList();
+		nombres.forEach(c -> System.out.println(c));
+		
+		
+		System.out.println("CONSULTA QUE DEVUELVA NOMBRES DISTINTOS");
+		nombres = em.createQuery("SELECT DISTINCT(c.nombre) from Cliente c", String.class)
+				.getResultList();
+		nombres.forEach(c -> System.out.println(c));
+		
+		System.out.println("CONSULTA QUE DEVUELVA FORMA DE PAGO UNICA");
+		List<String> formasPago = em.createQuery("SELECT distinct(c.formaDePago) from Cliente c",String.class).getResultList();
+		formasPago.forEach(c -> System.out.println(c));
+		
+		System.out.println("CONSULTA QUE cuenta FORMA DE PAGO UNICA");
+		long totalFormasPago = em.createQuery("SELECT count(distinct(c.formaDePago)) from Cliente c",Long.class).getSingleResult();
+		System.out.println(totalFormasPago);
+		
+		System.out.println("CONSULTA CON NOMBRES Y APELLIDO CONCATENADOS");
+//		nombres = em.createQuery("SELECT concat(c.nombre, c.apellido) FROM Cliente c",String.class).getResultList();
+		nombres = em.createQuery("SELECT c.nombre || ' ' || c.apellido FROM Cliente c",String.class).getResultList();
+		nombres.forEach(c -> System.out.println(c));
+		
+		System.out.println("CONSULTA CONVIERTE A MAYUSCULAS");
+		nombres = em.createQuery("SELECT upper(concat(c.nombre, c.apellido)) FROM Cliente c",String.class).getResultList();
+		nombres.forEach(c -> System.out.println(c));
+		
+		
+		System.out.println("CONSULTA PARA BUSCAR POR NOMBRE");
+		String par = "AF";
+		clientes = em.createQuery("SELECT c from Cliente c where upper(c.nombre) like upper(:parametro)", Cliente.class)
+				.setParameter("parametro", "%"+par+"%")
+				.getResultList();
+		clientes.forEach(c -> System.out.println(c));
 		
 		em.close();
 	}	

@@ -31,7 +31,12 @@ public class Cliente {
 		this.apellido = apellido;
 		this.formaDePago = formaDePago;
 	}
-	public Cliente() {}		
+	public Cliente() {}
+	
+	public Cliente(String nombre, String apellido) {
+		this.nombre = nombre;
+		this.apellido = apellido;
+	}
 	public long getId() {
 		return id;
 	}
