@@ -1,6 +1,7 @@
 package mx.com.yamil.hibernateapp;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 import jakarta.persistence.EntityManager;
 import mx.com.yamil.hibernateapp.entity.Cliente;
@@ -101,6 +102,33 @@ public class HibernateQL {
 				.getResultList();
 		clientes.forEach(c -> System.out.println(c));
 		
+		System.out.println("CONSULTAS POR RANGOS");
+//		clientes = em.createQuery("SELECT c FROM Cliente c WHERE c.id BETWEEN 2 AND 3",Cliente.class).getResultList();
+		clientes = em.createQuery("SELECT c FROM Cliente c WHERE c.nombre BETWEEN 'J' AND 'Q'",Cliente.class).getResultList();
+		clientes.forEach(c -> System.out.println(c));
+		System.out.println("CONSULTAS CON ORDEN");
+		clientes = em.createQuery("select c from Cliente c order by c.nombre desc",Cliente.class).getResultList();
+		clientes.forEach(c -> System.out.println(c));
+		
+		System.out.println("TOTAL DE REGISTROS EN LA TABLA");
+		long totalReg = em.createQuery("SELECT count(c) as total from Cliente c",Long.class).getSingleResult();
+		System.out.println(totalReg);
+		
+		System.out.println("CONSULTAR ID MINIMO EN LA TABLA");
+		long minId = em.createQuery("SELECT MIN(c.id) AS minimo FROM Cliente c",Long.class).getSingleResult();
+		System.out.println(minId);
+		
+		System.out.println("CONSULTAR ID MAX EN LA TABLA");
+		long maxId = em.createQuery("SELECT MAX(c.id) AS maximo FROM Cliente c",Long.class).getSingleResult();
+		System.out.println(maxId);
+		
+		System.out.println("CONSULTAR POR NOMBRE Y SU LONGITUD");
+		clientesList = em.createQuery("select c.nombre , length(c.nombre) from Cliente c", Object[].class).getResultList();
+		clientesList.forEach(c -> {
+			String nom = (String) c[0];
+			int largo=(int) c[1];
+			System.out.println("nombre: "+nom+" long: "+largo);
+		});
 		em.close();
 	}	
 }
