@@ -1,7 +1,7 @@
 package mx.com.yamil.hibernateapp;
 
+import java.util.Arrays;
 import java.util.List;
-import java.util.function.Consumer;
 
 import jakarta.persistence.EntityManager;
 import mx.com.yamil.hibernateapp.entity.Cliente;
@@ -128,6 +128,51 @@ public class HibernateQL {
 			String nom = (String) c[0];
 			int largo=(int) c[1];
 			System.out.println("nombre: "+nom+" long: "+largo);
+		});
+		
+		System.out.println("Consulta por el nombre mas corto");
+		int minLargoNombre = em.createQuery("SELECT MIN(length(c.nombre)) from Cliente c", Integer.class).getSingleResult();
+		System.out.println(minLargoNombre);
+		
+		System.out.println("Consulta por el nombre mas largo");
+		int maxLargoNombre = em.createQuery("SELECT MAX(LENGTH(c.nombre)) FROM Cliente c", Integer.class).getSingleResult();
+		System.out.println(maxLargoNombre);		
+		
+		System.out.println("consultas resumen funciones: avg, min, max, sum");
+		Object[] estadisticas = em.createQuery("SELECT MIN(c.id), MAX(c.id), SUM(c.id), COUNT(c.id), AVG(LENGTH(c.nombre)) FROM Cliente c", Object[].class)
+				.getSingleResult();
+		
+		long min = (long) estadisticas[0];
+		long max = (long) estadisticas[1];
+		long sum = (long) estadisticas[2];
+		long count = (long) estadisticas[3];
+		double avg = (double) estadisticas[4];
+		System.out.println("min="+min+" max="+max+" sum="+sum+" count="+count);
+		
+		//SUBQUERIES
+		System.out.println("Consulta con nombre mas corto y su longitud");
+		clientesList = em.createQuery("SELECT c.nombre, LENGTH(c.nombre) FROM Cliente c "
+				+ "WHERE LENGTH(c.nombre) = (SELECT min(length(c.nombre)) from Cliente c)", Object[].class)
+				.getResultList();
+		clientesList.forEach(c -> {
+			String nom = (String) c[0];
+			int largo = (int) c[1];
+			System.out.println("nombre: "+nom+" largo="+largo);
+		});
+		
+		System.out.println("Consulta para obtener el ultimo registro");
+		Cliente ultimoCliente = em.createQuery("SELECT c FROM Cliente c WHERE c.id = (SELECT MAX(c.id) FROM Cliente c) ",Cliente.class)
+				.getSingleResult();
+		System.out.println(ultimoCliente);
+		
+		//WHERE IN (IN es para subconjuntos)
+		System.out.println("Consulta where IN");
+//		clientes = em.createQuery("select c from Cliente c where c.id in (1,2,10)",Cliente.class).getResultList();
+		clientes = em.createQuery("select c from Cliente c where c.id in :ids",Cliente.class)
+				.setParameter("ids", Arrays.asList(1l, 2l, 10l, 40l))
+				.getResultList();
+		clientes.forEach(c -> {
+			System.out.println(c);
 		});
 		em.close();
 	}	
