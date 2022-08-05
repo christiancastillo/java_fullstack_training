@@ -8,5 +8,6 @@
 	<generator class="native"/>
 	</id>
 	<property name="canBark" type="java.lang.Integer" column="CAN_BARK"/>
+	<property name="isAlive" type="java.lang.Integer" column="IS_ALIVE"/>
 	</class>	
 </hibernate-mapping>

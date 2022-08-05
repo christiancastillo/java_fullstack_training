@@ -4,7 +4,14 @@ public class Animal {
 	
 	private Long idAnimal;
 	private Integer canBark;
+	private Integer isAlive;
 	
+	public Integer getIsAlive() {
+		return isAlive;
+	}
+	public void setIsAlive(Integer isAlive) {
+		this.isAlive = isAlive;
+	}
 	public Long getIdAnimal() {
 		return idAnimal;
 	}
