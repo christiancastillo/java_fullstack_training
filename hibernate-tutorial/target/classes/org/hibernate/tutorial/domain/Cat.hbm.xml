@@ -10,9 +10,8 @@
 	<property name="name" type="java.lang.String" column="NAME"/>
 	<property name="breed" type="java.lang.String" column="BREED"/>
 	<property name="age" type="java.lang.Integer" column="AGE"/>
-	<property name="dateOfBirth" type="java.util.Date" column="DATE_OF_BIRTH" not-null="true"/>
+	<property name="dateOfBirth" type="java.util.Date" column="DATE_OF_BIRTH"/>
 	<property name="litterId" type="java.lang.Integer" column="LITTER_ID" update="false"/>
-	
 	
 	<!-- Se agregan las relaciones a otras tablas -->
 	<many-to-one name="mother" column="mother_id" update="false"/>

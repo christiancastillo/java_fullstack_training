@@ -6,12 +6,13 @@
 		<class>mx.com.yamil.hibernateapp.entity.Cliente</class> <!-- Definimos la entidad en XML -->
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		<properties>
-			<property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/java_curso?serverTimezone=America/Santiago"/>
+			<property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/java_curso"/>
 			<property name="jakarta.persistence.jdbc.user" value="desarrollo"/>
 			<property name="jakarta.persistence.jdbc.password" value="desarrollo"/>
 			<property name="jakarta.persistence.jdbc.Driver" value="com.mysql.cj.jdbc.Driver"/>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect"/>
 			<property name="hibernate.show_sql" value="true"/>
+			<property name="hibernate.format_sql" value="true"/>
 		</properties>
 	</persistence-unit>
 </persistence>

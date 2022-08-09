@@ -7,6 +7,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.ParameterExpression;
+import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import mx.com.yamil.hibernateapp.entity.Cliente;
 import mx.com.yamil.hibernateapp.utilities.JpaUtilities;
@@ -52,7 +53,7 @@ public class HibernateCriteria {
 		System.out.println("Ejemplo usando where between para rangos");
 		query = criteria.createQuery(Cliente.class);
 		from =query.from(Cliente.class);
-		query.select(from).where(criteria.between(from.get("id"), 2l, 7l));
+		query.select(from).where(criteria.between(from.get("id"), 2l, 7l));		
 		clientes = em.createQuery(query)
 				.getResultList();
 		System.out.println(clientes);
@@ -83,6 +84,66 @@ public class HibernateCriteria {
 		query.select(from).where(criteria.gt(criteria.length(from.get("nombre")), 5l)); //mayor o igual que 3
 		clientes = em.createQuery(query).getResultList();
 		clientes.forEach(c -> System.out.println(c));		
+		
+//		System.out.println("Conjuncion AND y disy OR");
+//		from = query.from(Cliente.class);
+//		Predicate predNombre = criteria.equal(from.get("nombre"), "Dafne");
+//		Predicate porPago = criteria.equal(from.get("formaDePago"), "Debito");
+//		query.select(from).where(predNombre,porPago);
+//		clientes = em.createQuery(query).getResultList();
+//		clientes.forEach(c -> System.out.println(c));
+		
+//		System.out.println("Consultas por ORDER BY");
+//		query =criteria.createQuery(Cliente.class);
+//		from = query.from(Cliente.class);
+		
+//		System.out.println("=========Consulta solo por el nombre de los clientes======");
+//		CriteriaQuery<String> queryString = criteria.createQuery(String.class);
+//		from = queryString.from(Cliente.class);
+//		queryString.select(from.get("nombre"));
+//		List<String> nombres = em.createQuery(queryString).getResultList();
+//		nombres.forEach(System.out::println);
+		
+//		query.select(from).orderBy
+		
+		System.out.println("========== consulta solo por el nombre de los clientes unicos con distinct =========");
+		CriteriaQuery<String> queryString = criteria.createQuery(String.class);
+		from = queryString.from(Cliente.class);
+		queryString.select(criteria.upper(from.get("nombre"))).distinct(true);
+		List<String> nombres = em.createQuery(queryString).getResultList();
+		nombres.forEach(System.out::println);
+		
+		System.out.println("======== consulta por nombre y apellido concatenado");
+		queryString = criteria.createQuery(String.class);
+		from = queryString.from(Cliente.class);
+		
+		queryString.select(criteria.concat(criteria.concat(from.get("nombre"), " "),from.get("apellido")));
+		nombres = em.createQuery(queryString).getResultList();
+		nombres.forEach(System.out::println);
+		
+		System.out.println("CONSULTA DE CAMPOS PERSONALIZADOS");
+		CriteriaQuery<Object[]> queryObject = criteria.createQuery(Object[].class);
+		from = queryObject.from(Cliente.class);
+		queryObject.multiselect(from.get("id"),from.get("nombre"),from.get("apellido"));
+		List<Object[]> registros = em.createQuery(queryObject).getResultList();
+		registros.forEach(reg -> {
+			Long id = (Long) reg[0];
+			String nombre = (String) reg[1];
+			String apellido = (String) reg[2];
+			System.out.println("id = "+id+", nombre="+nombre+", apellido="+apellido);
+		});
+
+		System.out.println("CONSULTA DE CAMPOS PERSONALIZADOS CON WHERE");
+		queryObject = criteria.createQuery(Object[].class);
+		from = queryObject.from(Cliente.class);
+		queryObject.multiselect(from.get("id"),from.get("nombre"),from.get("apellido")).where(criteria.like(from.get("nombre"),"%af%"));
+		registros = em.createQuery(queryObject).getResultList();
+		registros.forEach(reg -> {
+			Long id = (Long) reg[0];
+			String nombre = (String) reg[1];
+			String apellido = (String) reg[2];
+			System.out.println("id = "+id+", nombre="+nombre+", apellido="+apellido);
+		});		
 		
 		
 		em.close();
