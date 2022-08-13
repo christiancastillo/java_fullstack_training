@@ -13,6 +13,7 @@
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect"/>
 			<property name="hibernate.show_sql" value="true"/>
 			<property name="hibernate.format_sql" value="true"/>
+			<property name="jakarta.persistence.schema-generate.database.action" value="drop-and-create"/> <!-- Actualiza tabla, si existe la borra y la crea desde cero -->
 		</properties>
 	</persistence-unit>
 </persistence>

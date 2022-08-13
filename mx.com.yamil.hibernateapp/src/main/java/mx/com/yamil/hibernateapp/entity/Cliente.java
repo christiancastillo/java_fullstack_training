@@ -1,6 +1,9 @@
 package mx.com.yamil.hibernateapp.entity;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,6 +26,12 @@ public class Cliente {
 	private String apellido; //los campos se mapean exactamente igual que en la tabla
 	@Column(name="forma_pago")
 	private String formaDePago;
+	
+	@Embedded
+	private Auditoria audit = new Auditoria(); //indicamos que los metodos "embebibles" son "embebidos" en esta clase o entity.
+	
+	
+
 	
 	public Cliente(long id, String nombre, String apellido, String formaDePago) {
 		super();
@@ -61,9 +70,15 @@ public class Cliente {
 	public void setFormaDePago(String formaDePago) {
 		this.formaDePago = formaDePago;
 	}
+	
+
+
+
 	@Override
 	public String toString() {
-		return "Cliente [id=" + id + ", nombre=" + nombre + ", apellido=" + apellido + ", formaDePago=" + formaDePago
+		LocalDateTime creado = this.audit != null?audit.getCreadoEn():null;
+		LocalDateTime editado = this.audit != null?audit.getEditadoEn():null;
+		return "Cliente [id=" + id + ", nombre=" + nombre + ", apellido=" + apellido + ", formaDePago=" + formaDePago+"creadoEn="+creado+"editadoEn="+editado
 				+ "]";
 	}	
 }
