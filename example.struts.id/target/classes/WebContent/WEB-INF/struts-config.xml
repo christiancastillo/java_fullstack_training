@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ 
+<!DOCTYPE struts-config PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 1.2//EN"
+"http://jakarta.apache.org/struts/dtds/struts-config_1_2.dtd">
+ 
+ <!-- Definicion de BEANS (Forms) -->
+<struts-config>
+<form-beans>
+<form-bean name="LoginForm" type="example.struts.id.form.LoginForm" />
+</form-beans>
+ 
+<global-forwards>
+<forward name="welcome" path="/Welcome.do" />
+</global-forwards>
+ 
+<action-mappings>
+	<action input="/login.jsp" name="LoginForm" path="/Login" scope="session" type="example.struts.id.action.LoginAction">
+	<forward name="success" path="/success.jsp" />
+	<forward name="failure" path="/failure.jsp" />
+</action>
+
+<action path="/Welcome" forward="/index.jsp" />
+</action-mappings>
+ 
+<!-- <message-resources parameter="com/jwt/resources/ApplicationResource" /> -->
+ 
+</struts-config>
