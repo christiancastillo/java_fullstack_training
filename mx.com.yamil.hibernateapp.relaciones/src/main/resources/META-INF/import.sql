@@ -1,0 +1,1 @@
+INSERT INTO `clientes` VALUES (1,'Christian Yamil','Castillo','Debito',NULL,'2022-08-13 01:32:38'),(2,'Alita de Pollo','Torres S.','Paypal',NULL,NULL),(3,'Dafne','Castillo C.','Debito',NULL,NULL),(4,'Yamil','Castillo','Debito','2022-08-13 01:24:14',NULL),(5,'Christian Yamil e','Castillo covarrubias','Paypal','2022-08-13 01:56:04','2022-08-13 01:57:22');

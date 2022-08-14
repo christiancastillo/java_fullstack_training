@@ -1,0 +1,36 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>mx.com.yamil.hibernateapp.relaciones</groupId>
+  <artifactId>mx.com.yamil.hibernateapp.relaciones</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  
+  <dependencies>
+	<dependency>
+	    <groupId>org.hibernate</groupId>
+	    <artifactId>hibernate-core-jakarta</artifactId>
+	    <version>5.5.7.Final</version>
+	</dependency>  
+	
+	<!-- https://mvnrepository.com/artifact/com.oracle/ojdbc14 -->
+<!--  <dependency>
+    <groupId>com.oracle</groupId>
+    <artifactId>ojdbc14</artifactId>
+    <version>10.2.0.2.0</version>
+</dependency> -->
+	
+	
+<dependency>
+    <groupId>mysql</groupId>
+    <artifactId>mysql-connector-java</artifactId>
+    <version>8.0.28</version>
+</dependency>
+	
+	
+</dependencies>
+  
+  <properties>
+  	<maven.compiler.source>16</maven.compiler.source>
+  	<maven.compiler.target>16</maven.compiler.target>
+  </properties>
+  
+</project>
